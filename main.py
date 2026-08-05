@@ -36,6 +36,7 @@ def home(request: Request, db: Annotated[Session, Depends(get_db)]):
         {"posts": posts, "title": "Home"},
     )
 
+# Post Page
 @app.get("/posts/{post_id}", include_in_schema=False)
 def post_page(request: Request, post_id: int, db: Annotated[Session, Depends(get_db)]):
     result = db.execute(select(models.Post).where(models.Post.id == post_id))
@@ -52,6 +53,7 @@ def post_page(request: Request, post_id: int, db: Annotated[Session, Depends(get
 
     raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail="Post not found!")
 
+# User Posts Page
 @app.get("/users/{user_id}/posts", include_in_schema=False, name="user_posts")
 def user_posts_page(request: Request, user_id: int, db: Annotated[Session, Depends(get_db)]):
     result = db.execute(select(models.User).where(models.User.id == user_id))
@@ -67,6 +69,7 @@ def user_posts_page(request: Request, user_id: int, db: Annotated[Session, Depen
 
 # ------- API Routes --------------------------------------------------------------------------------
 
+# Create New User
 @app.post("/api/users", response_model=UserResponse, status_code=status.HTTP_201_CREATED)
 def create_user(user: UserCreate, db: Annotated[Session, Depends(get_db)]):
     result = db.execute(select(models.User).where(models.User.username == user.username))
@@ -98,6 +101,7 @@ def create_user(user: UserCreate, db: Annotated[Session, Depends(get_db)]):
 
     return new_user
 
+# Get User
 @app.get("/api/users/{user_id}", response_model=UserResponse)
 def get_user(user_id: int, db: Annotated[Session, Depends(get_db)]):
     result = db.execute(select(models.User).where(models.User.id == user_id))
@@ -108,6 +112,7 @@ def get_user(user_id: int, db: Annotated[Session, Depends(get_db)]):
 
     raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail="User not found!")
 
+# Get User Posts
 @app.get("/api/users/{user_id}/posts", response_model=list[PostResponse])
 def get_user_posts(user_id: int, db: Annotated[Session, Depends(get_db)]):
     result = db.execute(select(models.User).where(models.User.id == user_id))
@@ -177,6 +182,7 @@ def delete_user(user_id: int, db: Annotated[Session, Depends(get_db)]):
     db.delete(user)
     db.commit()
 
+# Get Posts
 @app.get("/api/posts", response_model=list[PostResponse])
 def get_posts(db: Annotated[Session, Depends(get_db)]):
     result = db.execute(select(models.Post))
@@ -184,6 +190,7 @@ def get_posts(db: Annotated[Session, Depends(get_db)]):
     
     return posts
 
+# Create Post
 @app.post("/api/posts", response_model=PostResponse, status_code=status.HTTP_201_CREATED)
 def create_post(post: PostCreate, db: Annotated[Session, Depends(get_db)]):
     result = db.execute(select(models.User).where(models.User.id == post.user_id))
@@ -204,6 +211,7 @@ def create_post(post: PostCreate, db: Annotated[Session, Depends(get_db)]):
 
     return new_post # Post Response
 
+# Get Post
 @app.get("/api/posts/{post_id}", response_model=PostResponse)   # path parameter
 def get_post(post_id: int, db: Annotated[Session, Depends(get_db)]):
     results = db.execute(select(models.Post).where(models.Post.id == post_id))
@@ -282,6 +290,7 @@ def delete_post(post_id: int, db: Annotated[Session, Depends(get_db)]):
     db.delete(post)
     db.commit()
 
+# Exception Handlers
 @app.exception_handler(StarletteHTTPException)
 def general_http_exception_handler(request: Request, exception: StarletteHTTPException):
 
