@@ -2,16 +2,20 @@ from fastapi import FastAPI, Request, HTTPException, status, Depends
 from fastapi.exceptions import RequestValidationError
 from fastapi.staticfiles import StaticFiles
 from fastapi.templating import Jinja2Templates
+from fastapi.exception_handlers import http_exception_handler, request_validation_exception_handler
 from starlette.exceptions import HTTPException as StarletteHTTPException
-from schemas import PostCreate, PostUpdate, PostResponse, UserCreate, UserResponse, UserUpdate
+
 from typing import Annotated
+from contextlib import asynccontextmanager
+
 from sqlalchemy import select
 from sqlalchemy.ext.asyncio import AsyncSession
 from sqlalchemy.orm import selectinload
+
 import models
 from database import Base, engine, get_db
-from contextlib import asynccontextmanager
-from fastapi.exception_handlers import http_exception_handler, request_validation_exception_handler
+
+from routers import users, posts
 
 # Lifespan Function
 @asynccontextmanager
@@ -31,6 +35,9 @@ app.mount("/media", StaticFiles(directory="media"), name="media")
 
 # Where to find templates (create templates object)
 templates = Jinja2Templates(directory="templates")
+
+app.include_router(users.router, prefix="/api/users", tags=["users"])
+app.include_router(posts.router, prefix="/api/posts", tags=["posts"])
 
 # ------- HTML Routes --------------------------------------------------------------------------------
 
