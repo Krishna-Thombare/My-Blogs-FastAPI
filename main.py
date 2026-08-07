@@ -48,6 +48,7 @@ async def home(request: Request, db: Annotated[AsyncSession, Depends(get_db)]):
     result = await db.execute(
         select(models.Post)
         .options(selectinload(models.Post.author))
+        .order_by(models.Post.date_posted.desc())
     )
     posts = result.scalars().all() # returns all posts
     return templates.TemplateResponse(
@@ -81,9 +82,7 @@ async def post_page(request: Request, post_id: int, db: Annotated[AsyncSession, 
 # User Posts Page
 @app.get("/users/{user_id}/posts", include_in_schema=False, name="user_posts")
 async def user_posts_page(request: Request, user_id: int, db: Annotated[AsyncSession, Depends(get_db)]):
-    result = await db.execute(
-        select(models.User)
-        .where(models.User.id == user_id))
+    result = await db.execute(select(models.User).where(models.User.id == user_id))
     user = result.scalars().first()
 
     if not user:
@@ -92,7 +91,9 @@ async def user_posts_page(request: Request, user_id: int, db: Annotated[AsyncSes
     result = await db.execute(
         select(models.Post)
         .options(selectinload(models.Post.author))
-        .where(models.Post.user_id == user_id))
+        .where(models.Post.user_id == user_id)
+        .order_by(models.Post.date_posted.desc())
+    )
     posts = result.scalars().all()
 
     return templates.TemplateResponse(request, "user_posts.html", {"posts": posts, "user": user, "title": f"{user.username}'s Posts"})
@@ -135,3 +136,4 @@ async def validation_exception_handler(request: Request, exception: RequestValid
         },
         status_code=status.HTTP_422_UNPROCESSABLE_CONTENT,
     )
+
