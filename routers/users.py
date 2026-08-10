@@ -152,7 +152,7 @@ async def update_user(
         raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail="User not found!")
 
     if user_update.username is not None and user_update.username.lower() != user.username.lower():
-        result = db.execute(select(models.User).where(func.lower(models.User.username) == user_update.username.lower()))   # queyring to check if username exists in database
+        result = await db.execute(select(models.User).where(func.lower(models.User.username) == user_update.username.lower()))   # queyring to check if username exists in database
         existing_user = result.scalars().first()
 
         if existing_user:
@@ -162,7 +162,7 @@ async def update_user(
             )
 
     if user_update.email is not None and user_update.email.lower() != user.email.lower():
-        result = db.execute(select(models.User).where(func.lower(models.User.email) == user_update.email.lower()))
+        result = await db.execute(select(models.User).where(func.lower(models.User.email) == user_update.email.lower()))
         existing_mail = result.scalars().first()
 
         if existing_mail:
