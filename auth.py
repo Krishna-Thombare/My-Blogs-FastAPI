@@ -11,7 +11,7 @@ password_hash = PasswordHash.recommended()
 
 # Configure OAuth2 to extract Bearer tokens from requests
 # The client gets the token from this endpoint
-oauth2_schema = OAuth2PasswordBearer(tokenUrl="api/users/token")
+oauth2_scheme = OAuth2PasswordBearer(tokenUrl="api/users/token")
 
 # Hash a plain-text password before storing it in the database
 def hash_password(password: str) -> str:
