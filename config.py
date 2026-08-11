@@ -20,4 +20,7 @@ class Settings(BaseSettings):
     # Access token in minutes
     access_token_expire_minutes: int = 30
 
+    # Max image size
+    max_upload_size_bytes: int = 5 * 1024 * 1024   # 5 MB
+
 settings = Settings()   # Load values from .env file
