@@ -13,7 +13,6 @@ from sqlalchemy import select
 from sqlalchemy.ext.asyncio import AsyncSession
 
 import models
-from config import settings
 from database import get_db
 
 # Create a secure password hashing configuration using the recommended algorithm
