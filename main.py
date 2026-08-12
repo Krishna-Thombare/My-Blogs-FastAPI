@@ -39,7 +39,7 @@ templates = Jinja2Templates(directory="templates")
 app.include_router(users.router, prefix="/api/users", tags=["users"])
 app.include_router(posts.router, prefix="/api/posts", tags=["posts"])
 
-# ------- HTML Routes --------------------------------------------------------------------------------
+# ------- HTML Routes ------------------------------------------------------------------------------------------------------------------------------
 
 # Both routes will execute same function
 @app.get("/", include_in_schema=False, name="home")   # this routes will not appear in /docs. Keeps html and api routes seperate.
