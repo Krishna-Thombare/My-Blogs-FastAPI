@@ -125,7 +125,7 @@ async def account_page(request: Request):
         {"title": "Account"}
     )
 
-# Exception Handlers
+# ------- Exception Handlers ------------------------------------------------------------------------------------------------------------------------------
 @app.exception_handler(StarletteHTTPException)
 async def general_http_exception_handler(request: Request, exception: StarletteHTTPException):
 
