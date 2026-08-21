@@ -33,6 +33,7 @@ async def get_posts(
         .offset(skip)
         .limit(limit)
     )
+    
     posts = result.scalars().all()
 
     # Check if there are more posts available to fetch (True or False)
