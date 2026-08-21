@@ -137,6 +137,7 @@ async def get_user_posts(
         .select_from(models.Post)
         .where(models.Post.user_id == user_id),
     )
+    
     total = count_result.scalar() or 0
 
     result = await db.execute(
