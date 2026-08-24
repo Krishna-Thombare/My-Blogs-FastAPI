@@ -375,5 +375,74 @@
   // Load user data on page load
   loadUserData();
 
+  // Change Password Handler
+  const changePasswordForm = document.getElementById('changePasswordForm');
+  const changePasswordBtn = document.getElementById('changePasswordBtn');
+
+  changePasswordForm.addEventListener('submit', async (event) => {
+    event.preventDefault();
+
+    const token = getToken();
+    if (!token) {
+      window.location.href = '/login';
+      return;
+    }
+
+    const currentPassword = document.getElementById('currentPassword').value;
+    const newPassword = document.getElementById('newPassword').value;
+    const confirmNewPassword = document.getElementById('confirmNewPassword').value;
+
+    // Client-side password matching validation
+    if (newPassword !== confirmNewPassword) {
+      document.getElementById('errorMessage').textContent = 'New passwords do not match.';
+      showModal('errorModal');
+      return;
+    }
+
+    // Disable button during submission
+    changePasswordBtn.disabled = true;
+    changePasswordBtn.textContent = 'Changing...';
+
+    try {
+      const response = await fetch('/api/users/me/password', {
+        method: 'PATCH',
+        headers: {
+          'Content-Type': 'application/json',
+          'Authorization': `Bearer ${token}`,
+        },
+        body: JSON.stringify({
+          current_password: currentPassword,
+          new_password: newPassword,
+        }),
+      });
+
+      if (response.status === 401) {
+        window.location.href = '/login';
+        return;
+      }
+
+      if (response.ok) {
+        // Clear form
+        changePasswordForm.reset();
+
+        document.getElementById('successMessage').textContent =
+          'Password changed successfully!';
+        showModal('successModal');
+      } else {
+        const error = await response.json();
+        document.getElementById('errorMessage').textContent = getErrorMessage(error);
+        showModal('errorModal');
+      }
+    } catch (error) {
+      document.getElementById('errorMessage').textContent =
+        'Network error. Please check your connection and try again.';
+      showModal('errorModal');
+    } finally {
+      // Re-enable button
+      changePasswordBtn.disabled = false;
+      changePasswordBtn.textContent = 'Change Password';
+    }
+  });
+
 </script>
 {% endblock scripts %}
