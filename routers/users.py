@@ -146,6 +146,7 @@ async def forget_password(
         db.add(reset_token)
         await db.commit()
 
+        # Send password reset email in the background.
         background_tasks.add_task(
             send_password_reset_email,
             to_email=user.email,
