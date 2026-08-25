@@ -37,7 +37,7 @@ def verify_password(plain_password: str, hashed_password: str) -> bool:
 def generate_reset_token() -> str:
     return secrets.token_urlsafe(32)
 
-# Hash the reset token for secure storage.
+# Hash the reset token for secure storage
 def hash_reset_token(token: str) -> str:
     return hashlib.sha256(token.encode()).hexdigest()
 
