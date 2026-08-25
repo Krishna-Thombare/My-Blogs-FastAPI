@@ -80,7 +80,7 @@ async def get_post(post_id: int, db: Annotated[AsyncSession, Depends(get_db)]):
 
     raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail="Post not found!")
 
-# Update Post Full
+# Update Post - Full
 @router.put("/{post_id}", response_model=PostResponse)   # path parameter
 async def update_post_full(
     post_id: int,
@@ -106,7 +106,7 @@ async def update_post_full(
 
     return post
 
-# Update Post Partial
+# Update Post - Partial
 @router.patch("/{post_id}", response_model=PostResponse)   # path parameter
 async def update_post_partial(
     post_id: int,
