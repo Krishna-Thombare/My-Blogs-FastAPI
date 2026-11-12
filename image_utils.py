@@ -45,15 +45,4 @@ def process_profile_image(content: bytes) -> tuple[bytes, str]:
 
     return output.read(), filename
 
-# Delete Profile Image
-def delete_profile_image(filename: str | None) -> None:
-    if filename is None:
-        return
-
-    filepath = PROFILE_PICS_DIR / filename
-
-    # If exists deletes the file
-    if filepath.exists():
-        filepath.unlink()
-
    
