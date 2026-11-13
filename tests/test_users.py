@@ -1,12 +1,11 @@
 from io import BytesIO
 from pathlib import Path
 from unittest.mock import AsyncMock, patch
-
 import pytest
 from httpx import AsyncClient
-
 from tests.conftest import auth_header, create_test_user, login_user
 
+# Test user creation with missing required fields (email and password).
 @pytest.mark.anyio
 async def test_create_user_validation_error(client: AsyncClient):
     response = await client.post(
