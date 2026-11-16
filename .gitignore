@@ -8,3 +8,9 @@ __pycache__/
 .pytest_cache/
 
 media/profile_pics/b3ff16f2ea9b4571825a742ce73797a4.jpg
+.neon
+node_modules/
+
+neon.ts
+package.json
+package-lock.json
