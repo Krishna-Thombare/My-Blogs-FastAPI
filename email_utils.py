@@ -38,7 +38,7 @@ async def send_password_reset_email(to_email: str, username: str, token: str) ->
     html_content = template.render(reset_url=reset_url, username=username)
 
     plain_text = f"""Hi {username},
-    Your requested to reset your password. Click the link below to set a new password:
+    You requested to reset your password. Click the link below to set a new password:
     {reset_url}
     This link will expire in 1 hour.
     If you didn't request this, you can safely ignore this email.
