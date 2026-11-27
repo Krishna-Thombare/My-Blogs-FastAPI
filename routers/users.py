@@ -259,7 +259,7 @@ async def get_user_posts(
     limit: Annotated[int, Query(ge=1, le=100)] = settings.posts_per_page):
 
     result = await db.execute(select(models.User).where(models.User.id == user_id))
-    user = result = result.scalars().first
+    user = result.scalars().first
 
     if not user:
         raise HTTPException(
