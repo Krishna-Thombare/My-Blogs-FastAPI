@@ -48,7 +48,7 @@ async def send_password_reset_email(to_email: str, username: str, token: str) ->
 
     await send_email(
         to_email=to_email,
-        subject="Rest Your Password = FastAPI Blog",
+        subject="Reset Your Password = FastAPIBlog",
         plain_text=plain_text,
         html_content=html_content
     )
